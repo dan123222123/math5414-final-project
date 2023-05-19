@@ -1,0 +1,62 @@
+\documentclass{beamer}
+
+\geometry{margin=10pt,top=0pt}
+
+\usepackage{multicol}
+\usepackage{xcolor}
+\usepackage{framed}
+\usepackage{amsmath,amssymb,mathtools}
+\usepackage{multirow}
+
+\usepackage[style=authoryear-ibid,backend=bibtex]{biblatex}
+\bibliography{../iep.bib}
+
+\colorlet{TFFrameColor}{blue!50}
+\colorlet{TFTitleColor}{white!75}
+
+\begin{document}
+\beamertemplatenavigationsymbolsempty
+%\maketitle
+
+\begin{frame}
+
+  %\frametitle{4-23-2023 Update}
+
+  \begin{titled-frame}{Real Stochastic IEP (RStIEP)}
+
+    \centering
+
+    Given a set $\mathcal{S} = \{1\} \cup \{ \lambda_i \in \mathbb{C} \,:\, -1 \leq \lambda_i \leq 1 \}_{i = 2}^n,$ construct a non-negative matrix $C \in \mathbb{R}^{n \times n}$ whose \emph{rows} sum to $1$ for which $\sigma(C) = \mathcal{S}$.
+
+  \end{titled-frame}
+
+  If $\lambda_1 = 1, \Lambda = \text{diag}{(\lambda_1, \cdots, \lambda_n)}$, then we may formulate the constrained optimization problem as:
+
+  \begin{center}
+    minimize\\$\left[ 2 \times \mathcal{J}(P,R) \right]^{1/2} \coloneqq \left\Vert P \Lambda P^{-1} - R \odot R \right\Vert = \left\Vert \Gamma(P) - \Xi(R) \right\Vert = \Vert \Delta(P,R) \Vert$\\subject to $P \in GL(\mathbb{R},n) $
+  \end{center}
+  where $\odot$ denotes the \emph{Hadamard} product.
+  With $[M, N] = MN - NM$ denoting the \emph{Lie bracket}, the gradient is given as~\autocite{chuInverseEigenvalueProblems2005}:
+  \begin{align*}
+    \nabla \mathcal{J}(P,R) = \left( \left[ \Delta(P,R), \Gamma(P)^T \right] P^{-T}, -2 \Delta(P,R) \odot R \right)
+  \end{align*}
+
+\end{frame}
+
+\begin{frame}
+
+  \begin{definition}[Scalar Splitting Operator \autocite{ciampoliniDirectSolutionInverse2014}]
+    Let $\lambda \in \mathbb{R}, a \in \mathbb{R}^+ - \{0\}$ such that $\vert \lambda \vert < a$.
+    Further, putting $h_{\text{min}} = \lambda / (a + \lambda)$ and $h_{\text{max}} = a / (a + \lambda)$, pick $r \in \mathbb{R}$ satisfying $\max{(h_{\text{min}},0)} \leq r \leq \min{(h_{\text{max}},1)}$.
+    Then the \emph{scalar splitting operator} is defined to be $$\widehat{S}(a,\lambda,r) \coloneqq \frac{a}{h_{\text{max}}} \begin{pmatrix} r & h_{\text{max}} - r\\r - h_{\text{min}} & 1 - r \end{pmatrix}.$$
+  \end{definition}
+
+  \textbf{Note:} Eigenvalues of $\widehat{S}(a,\lambda,r)$ are $a$ and $\lambda$.
+
+  \begin{align*}
+    \arraycolsep=1.8pt\def\arraystretch{1.5}
+    \left( \begin{array}{c|c|c} \mathbf{A}_{11} & \underline{c}_{1k}^T & \mathbf{A}_{12}\\\hline \underline{r}_{k1} & a_{kk} & \underline{r}_{k2}\\\hline \mathbf{A}_{21} & \underline{c}_{2k}^T & \mathbf{A}_{22} \end{array} \right) \xrightarrow[k]{\text{split at}} \left( \begin{array}{c|c|c} \mathbf{A}_{11} & \begin{array}{cc} r\underline{c}_{1k}^T & (1-r) \underline{c}_{1k}^T \end{array} & \mathbf{A}_{12}\\\hline \underline{r}_{k1} & \multirow{2}{*}{$\widehat{S}(a_{kk},\lambda,r)$} & \underline{r}_{k2}\\\underline{r_{k1}} && \underline{r_{k2}}\\\hline \mathbf{A}_{21} & \begin{array}{cc} r \underline{c}_{2k}^T & (1-r) \underline{c}_{2k}^T \end{array} & \mathbf{A}_{22} \end{array} \right)
+  \end{align*}
+\end{frame}
+
+\end{document}
